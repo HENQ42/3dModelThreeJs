@@ -4,7 +4,9 @@ var init = function() {
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    var container = document.getElementById('container');
+    container.appendChild(renderer.domElement);
+    
 
     // Define a extensão do seu ambiente.
     var extent = 10;
@@ -47,7 +49,7 @@ var init = function() {
     controls.update();
 
     // Substitua as URLs pelos caminhos dos seus arquivos STL
-    loadAndRenderStlFile('/modelos3d/Teste LowerJawScan.stl', '/modelos3d/Teste UpperJawScan.stl'); // Carrega os modelos STL
+    loadAndRenderStlFile('/ThreeJs/modelos3d/TesteLowerJawScan.stl', '/ThreeJs/modelos3d/TesteUpperJawScan.stl'); // Carrega os modelos STL
 
     animate();
 };
