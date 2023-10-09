@@ -7,10 +7,35 @@
             margin: 0;
             overflow: hidden;
         }
+        .menu-three{
+            background: #fff;
+            position: fixed;
+            top: 35px;
+            left: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .menu-three ul {
+            list-style: none;
+            margin: 5px;
+            text-align: left;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
-    <div id='container'></div>
+    <div>
+        <div class="menu-three">
+            <ul id="fileList">
+            </ul>
+        </div>
+        <div id='container'></div>
+    </div>
+
     <script src="./dist/threeLibOrbStllPlyl.bundle.js"></script>
     <script src="./index.js"></script>
 </body>

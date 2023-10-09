@@ -66,28 +66,60 @@ function render() {
 var meshes = []; // Armazena as malhas dos modelos
 
 
+var fileList = []; // Armazena os nomes dos arquivos
+
+function addListItem(filename, index) {
+    var ul = document.getElementById('fileList');
+    var li = document.createElement('li');
+    var label = document.createElement('label');
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = true;
+    input.id = 'checkbox_' + index;
+    label.appendChild(input);
+    var span = document.createElement('span');
+    span.className = 'name-arq';
+    span.textContent = filename;
+    label.appendChild(span);
+    li.appendChild(label);
+    ul.appendChild(li);
+
+
+    input.addEventListener('change', function () {
+        toggleObjectVisibility(index, !input.checked); 
+    });
+}
+
+function toggleObjectVisibility(index, hidden) {
+    if (index >= 0 && index < meshes.length) {
+        meshes[index].visible = !hidden; 
+    }
+}
+
 function loadAndRenderFile(...args) {
     try {
-        var material = new THREE.MeshStandardMaterial(
-            {
-                color: 0xffffff, //0x808080
-                side: THREE.DoubleSide,
-                metalness: 0.6,
-                roughness: 0.55,
-            }
-        );
-        args.forEach(element => {
+        var material = new THREE.MeshStandardMaterial({
+            color: 0xffffff, //0x808080
+            side: THREE.DoubleSide,
+            metalness: 0.6,
+            roughness: 0.55,
+        });
+        args.forEach((element, index) => {
+            var filename = element.split('/').pop(); 
+            addListItem(filename, index); 
             if (element.endsWith('.stl')) {
                 loaderStl.load(element, (geometry) => {
                     var mesh = new THREE.Mesh(geometry, material);
                     meshes.push(mesh);
                     scene.add(mesh);
+                    mesh.visible = true;
                 });
             } else if (element.endsWith('.ply')) {
                 loaderPly.load(element, (geometry) => {
                     var mesh = new THREE.Mesh(geometry, material);
                     meshes.push(mesh);
                     scene.add(mesh);
+                    mesh.visible = true;
                 });
             } else if (element.endsWith('.obj')) {
                 loaderObj.load(element, (object) => {
@@ -98,6 +130,7 @@ function loadAndRenderFile(...args) {
                     });
                     meshes.push(object);
                     scene.add(object);
+                    object.visible = true;
                 });
             } else {
                 throw new Error('Formato de arquivo não suportado');
@@ -108,7 +141,6 @@ function loadAndRenderFile(...args) {
     }
 }
 
-
 window.onload = () => { // é permitido arquivos de extensão .stl, .ply e .obj
-    init('/3dModelThreeJs/modelos3d/TesteLowerJawScan.stl', '/3dModelThreeJs/modelos3d/TesteUpperJawScan.stl');
+    init('/3dModelThreeJs/modelos3d/TesteLowerJawScan.stl', '/3dModelThreeJs/modelos3d/TesteUpperJawScan.stl', './modelos3d/FinalBaseMesh.obj');
 };
